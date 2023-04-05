@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/Alinka055/Client_Base_v5/issues"
   },
-  "homepage": "https://github.com/Alinka055/Client_Base_v5#readme"
+  "homepage": "https://github.com/Alinka055/Client_Base_v5#readme",
+  "dependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/register": "^7.21.0",
+    "prettier": "^2.8.7"
+  }
 }
