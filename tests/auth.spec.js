@@ -66,7 +66,7 @@ describe('Authorization test', () => {
             expect(response.body.message).to.eq('Auth failed')
         })
     })
-    describe.only('Authorization without password', () => {
+    describe('Authorization without password', () => {
         it('Response body returns code is 400', async () => {
             let response = await request('https://clientbase-server.herokuapp.com')
                 .post('/v5/user/login')
@@ -77,6 +77,18 @@ describe('Authorization test', () => {
             let response = await request('https://clientbase-server.herokuapp.com')
                 .post('/v5/user/login')
                 .send({email: 'forest@owner.com'})
+            expect(response.body.message).to.eq('Auth failed')
+        })
+    })
+    describe('Authorization without any credentials', () => {
+        it('Response body returns code is 400', async () => {
+            let response = await request('https://clientbase-server.herokuapp.com')
+                .post('/v5/user/login')
+            expect(response.statusCode).to.eq(400)
+        })
+        it('Response body returns error message', async () => {
+            let response = await request('https://clientbase-server.herokuapp.com')
+                .post('/v5/user/login')
             expect(response.body.message).to.eq('Auth failed')
         })
     })
