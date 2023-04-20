@@ -1,20 +1,20 @@
-import {expect} from "chai";
-import request from 'supertest';
+import {expect} from "chai"
+import request from 'supertest'
+import 'dotenv/config'
 
 describe('Authorization test', () => {
     describe('Authorization with valid credentials', () => {
-
 //console.log(response.body )
         it('Response status code is 200', async () => {
-            let response = await request('https://clientbase-server.herokuapp.com')
+            let response = await request(process.env.BASE_URL)
                 .post('/v5/user/login')
-                .send({email: 'forest@owner.com', password: '123123'})
+                .send({email: process.env.EMAIL, password: process.env.PASSWORD})
             expect(response.statusCode).to.eq(200)
         })
         it('Response body returns correct message', async () => {
-            let response = await request('https://clientbase-server.herokuapp.com')
+            let response = await request(process.env.BASE_URL)
                 .post('/v5/user/login')
-                .send({email: 'forest@owner.com', password: '123123'})
+                .send({email: process.env.EMAIL, password: process.env.PASSWORD})
             expect(response.body.message).to.eq('Auth success')
         })
         it('Response body returns token', async () => {
@@ -26,7 +26,7 @@ describe('Authorization test', () => {
     })
     describe('Authorization with invalid email', () => {
         it('Response body returns code is 400', async () => {
-            let response = await request('https://clientbase-server.herokuapp.com')
+            let response = await request(process.env.BASE_URL)
                 .post('/v5/user/login')
                 .send({email: 'forest@bear.com', password: 123123})
             expect(response.statusCode).to.eq(400)
