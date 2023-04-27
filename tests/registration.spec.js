@@ -4,12 +4,12 @@ import 'dotenv/config'
 import { faker } from '@faker-js/faker'
 
 describe('Register/create new user', () => {
-  describe('Register/create new user with valid credentials', () => {
+  describe.only('Register/create new user with valid credentials', () => {
     let response
-    let companyName = faker.word.noun()
+    let companyName = faker.company.name()
     let firstName = faker.name.firstName()
     let lastName = faker.name.lastName()
-    let email = faker.name.lastName() + '@gmail.com'
+    let email = 'user_' + Date.now() + '@gmail.com'
     let password = faker.word.adjective()
     before(async () => {
       response = await request(process.env.BASE_URL)
