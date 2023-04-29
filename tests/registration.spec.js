@@ -4,7 +4,7 @@ import 'dotenv/config'
 import { faker } from '@faker-js/faker'
 
 describe('Register/create new user', () => {
-  describe.only('Register/create new user with valid credentials', () => {
+  describe('Register/create new user with valid credentials', () => {
     let response
     let companyName = faker.company.name()
     let firstName = faker.name.firstName()

@@ -1,14 +1,13 @@
 import { expect } from 'chai'
 import request from 'supertest'
 import 'dotenv/config'
+import {login} from "../helpers/general";
 
-describe('Authorization test', () => {
+describe.only('Authorization test', () => {
   describe('Authorization with valid credentials', () => {
     let response
     before(async () => {
-      response = await request(process.env.BASE_URL)
-        .post('/v5/user/login')
-        .send({ email: process.env.EMAIL, password: process.env.PASSWORD })
+      response = await login(process.env.EMAIL, process.env.PASSWORD)
     })
     it('Response status code is 200', () => {
       expect(response.statusCode).to.eq(200)
@@ -24,9 +23,7 @@ describe('Authorization test', () => {
   describe('Authorization with invalid email', () => {
     let response
     before(async () => {
-      response = await request(process.env.BASE_URL)
-        .post('/v5/user/login')
-        .send({ email: 'forest@bear.com', password: 123123 })
+      response = await login('5555@gmail.com', process.env.PASSWORD)
     })
     it('Response body returns code is 400', () => {
       expect(response.statusCode).to.eq(400)
@@ -39,9 +36,7 @@ describe('Authorization test', () => {
   describe('Authorization with invalid password', () => {
     let response
     before(async () => {
-      response = await request('https://clientbase-server.herokuapp.com')
-        .post('/v5/user/login')
-        .send({ email: 'forest@owner.com', password: '5555' })
+      response = await login(process.env.EMAIL, '123654')
     })
     it('Response body returns code is 400', () => {
       expect(response.statusCode).to.eq(400)
@@ -54,9 +49,7 @@ describe('Authorization test', () => {
   describe('Authorization without email', () => {
     let response
     before(async () => {
-      response = await request('https://clientbase-server.herokuapp.com')
-        .post('/v5/user/login')
-        .send({ password: '123123' })
+      response = await login( process.env.PASSWORD)
     })
     it('Response body returns code is 400', () => {
       expect(response.statusCode).to.eq(400)
@@ -69,9 +62,7 @@ describe('Authorization test', () => {
   describe('Authorization without password', () => {
     let response
     before(async () => {
-      response = await request('https://clientbase-server.herokuapp.com')
-        .post('/v5/user/login')
-        .send({ email: 'forest@owner.com' })
+      response = await login(process.env.EMAIL)
     })
     it('Response body returns code is 400', async () => {
       expect(response.statusCode).to.eq(400)
@@ -84,9 +75,7 @@ describe('Authorization test', () => {
   describe('Authorization without any credentials', () => {
     let response
     before(async () => {
-      response = await request('https://clientbase-server.herokuapp.com').post(
-        '/v5/user/login'
-      )
+      response = await login()
     })
     it('Response body returns code is 400', async () => {
       expect(response.statusCode).to.eq(400)
