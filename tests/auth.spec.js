@@ -1,9 +1,8 @@
 import { expect } from 'chai'
-import request from 'supertest'
 import 'dotenv/config'
 import {login} from "../helpers/general";
 
-describe.only('Authorization test', () => {
+describe('Authorization test', () => {
   describe('Authorization with valid credentials', () => {
     let response
     before(async () => {
@@ -49,7 +48,7 @@ describe.only('Authorization test', () => {
   describe('Authorization without email', () => {
     let response
     before(async () => {
-      response = await login( process.env.PASSWORD)
+      response = await login( '', process.env.PASSWORD)
     })
     it('Response body returns code is 400', () => {
       expect(response.statusCode).to.eq(400)
@@ -83,5 +82,14 @@ describe.only('Authorization test', () => {
     it('Response body returns error message', async () => {
       expect(response.body.message).to.eq('Auth failed')
     })
+  })
+})
+describe('Space trimming', () => {
+  let response
+  before(async () => {
+    response = await login('    forest@owner.com  '.trim(), process.env.PASSWORD)
+  })
+  it('Response status code is 200', () => {
+    expect(response.statusCode).to.eq(200)
   })
 })
