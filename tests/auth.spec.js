@@ -48,7 +48,7 @@ describe('Authorization test', () => {
   describe('Authorization without email', () => {
     let response
     before(async () => {
-      response = await login( '', process.env.PASSWORD)
+      response = await login( process.env.PASSWORD)
     })
     it('Response body returns code is 400', () => {
       expect(response.statusCode).to.eq(400)

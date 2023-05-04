@@ -1,5 +1,4 @@
 import request from "supertest";
-import {faker} from "@faker-js/faker";
 export {login, registration}
 
 function login (email, password){

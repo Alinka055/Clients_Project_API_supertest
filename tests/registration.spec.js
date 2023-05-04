@@ -2,6 +2,7 @@ import {expect} from 'chai'
 import 'dotenv/config'
 import {faker} from '@faker-js/faker'
 import {login, registration} from "../helpers/general"
+import request from "supertest";
 
 describe('Register/create new user', () => {
     describe('Register/create new user with valid credentials', () => {
