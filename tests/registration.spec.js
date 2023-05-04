@@ -111,34 +111,40 @@ describe('Register/create new user', () => {
     })
 })
 
-// describe('Get registered users', () => {
-//   describe.only('Get user by id', () => {
-//     let response
-//     let getUser
-//     let id
-//     before(async () => {
-//       response = await login(process.env.EMAIL, process.env.PASSWORD)
-//       id = response.body.payload.user._id
-//       getUser = await request(process.env.BASE_URL)
-//           .get(`/v5/user/${id}`)
-//       console.log(id)
-//     })
-//     it('Response body return status code 200', () => {
-//       expect(getUser.statusCode).eq(200)
-//     })
-//     it('Response body return correct message', () => {
-//       expect(getUser.body.message).eq('User found')
-//     })
-//   })
-//   describe.only('Get all users', () => {
-//     let response
-//     before(async () => {
-//       response = await request(process.env.BASE_URL)
-//           .post('/v5/user/search')
-//           .send({limit: 100, page: 1})
-//     })
-//     it('Response body return status code 200', () => {
-//       expect(response.statusCode).eq(200)
-//     })
-//   })
-// })
+describe('Get registered users', () => {
+  describe('Get user by id', () => {
+    let response
+    let getUser
+    let id
+
+    before(async () => {
+      response = await login(process.env.EMAIL, process.env.PASSWORD)
+      id = response.body.payload.user._id
+      getUser = await request(process.env.BASE_URL)
+          .get(`/v5/user/${id}`)
+          .set('Authorization', process.env.TOKEN)
+    })
+
+    it('Response body return status code 200', () => {
+      expect(getUser.statusCode).eq(200)
+    })
+
+    it('Response body return correct message', () => {
+      expect(getUser.body.message).eq('User found')
+    })
+  })
+  describe('Get all users', () => {
+    let response
+
+    before(async () => {
+      response = await request(process.env.BASE_URL)
+          .post('/v5/user/search')
+          .send({limit: 100, page: 1})
+          .set('Authorization', process.env.TOKEN)
+    })
+
+    it('Response body return status code 200', () => {
+      expect(response.statusCode).eq(200)
+    })
+  })
+})
