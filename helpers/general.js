@@ -16,21 +16,21 @@ function createClient (name, phone, email){
         .send({name, phone, email})
         .set('Authorization', process.env.TOKEN)
 }
-function getClientById (id){
+function getClientById (clientId){
     return request(process.env.BASE_URL)
-        .get(`/v5/client/${id}`)
+        .get(`/v5/client/${clientId}`)
         .set('Authorization', process.env.TOKEN)
 }
 function getClientByName (clientName){
     return request(process.env.BASE_URL)
         .post('/v5/client/search')
-        .send({clientName})
+        .send({name: clientName})
         .set('Authorization', process.env.TOKEN)
 }
 function updateClient(clientName, clientPhone, clientId){
     return request(process.env.BASE_URL)
         .patch(`/v5/client/${clientId}`)
-        .send({clientName, clientPhone})
+        .send({name: clientName, phone: clientPhone})
         .set('Authorization', process.env.TOKEN)
 }
 function deleteClient(clientId){

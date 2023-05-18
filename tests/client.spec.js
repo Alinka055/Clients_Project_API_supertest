@@ -250,7 +250,7 @@ describe('Get all clients', () => {
 describe('Update client', () => {
   let clientId
   let res
-  const clientName = 'Anna Brown'
+  const clientName = 'Anna White'
   const clientPhone = '555555'
   let response
   let getClientRes
@@ -273,13 +273,13 @@ describe('Update client', () => {
     expect(response.body.message).to.eq('Client updated')
   });
 
-  // it('Varify the updated client name', () => {
-  //   expect(getClientRes.body.payload.name).to.eq(clientName)
-  // });
-  //
-  // it('Validaterify the updated client phone', () => {
-  //   expect(getClientRes.body.payload.phone).to.eq(clientPhone)
-  // });
+  it('Varify the updated client name', () => {
+    expect(getClientRes.body.payload.name).to.eq(clientName)
+  });
+
+  it('Validaterify the updated client phone', () => {
+    expect(getClientRes.body.payload.phone).to.eq(clientPhone)
+  });
 });
 
 describe('Delete client ', () => {
