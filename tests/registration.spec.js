@@ -133,6 +133,7 @@ describe('Get registered users', () => {
       expect(getUser.body.message).eq('User found')
     })
   })
+
   describe('Get all users', () => {
     let response
 
@@ -147,4 +148,17 @@ describe('Get registered users', () => {
       expect(response.statusCode).eq(200)
     })
   })
+})
+describe('Space trimming', () => {
+    let res
+    let response
+    let newEmail = '  anna' + Date.now() + '@gmail.com   '
+    before(async () => {
+        res = await registration(faker.company.name(), faker.name.firstName(), faker.name.lastName(), newEmail, process.env.PASSWORD)
+        response = await login(newEmail.trim(), process.env.PASSWORD)
+    })
+    console.log(res)
+    it('Response status code is 200', () => {
+        expect(response.statusCode).to.eq(200)
+    })
 })
