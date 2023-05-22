@@ -7,7 +7,6 @@ after (async () => {
 
   for(let i = 0; i < allClients.length; i++){
     await deleteClient(allClients[i]._id)
-    console.log(allClients[i]._id)
   }
 })
 describe('Create client', () => {
