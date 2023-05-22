@@ -16,6 +16,12 @@ function createClient (name, phone, email){
         .send({name, phone, email})
         .set('Authorization', process.env.TOKEN)
 }
+function getAllClients(){
+    return request(process.env.BASE_URL)
+        .post('/v5/client/search')
+        .set('Authorization', process.env.TOKEN)
+        .send({limit: 40})
+}
 function getClientById (clientId){
     return request(process.env.BASE_URL)
         .get(`/v5/client/${clientId}`)
@@ -39,4 +45,4 @@ function deleteClient(clientId){
         .set('Authorization', process.env.TOKEN)
 }
 
-export {login, registration, createClient, getClientById, updateClient, deleteClient, getClientByName}
+export {login, registration, createClient, getAllClients,getClientById, updateClient, deleteClient, getClientByName}

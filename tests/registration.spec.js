@@ -157,7 +157,7 @@ describe('Space trimming', () => {
         res = await registration(faker.company.name(), faker.name.firstName(), faker.name.lastName(), newEmail, process.env.PASSWORD)
         response = await login(newEmail.trim(), process.env.PASSWORD)
     })
-    console.log(res)
+
     it('Response status code is 200', () => {
         expect(response.statusCode).to.eq(200)
     })
