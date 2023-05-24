@@ -4,7 +4,8 @@
   "description": "New project for Client Base v5",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --config .mocharc.js --reporter mochawesome"
+    "test:reporter": "mocha --config .mocharc.js --reporter mochawesome",
+    "test": "mocha --config .mocharc.js"
   },
   "repository": {
     "type": "git",
