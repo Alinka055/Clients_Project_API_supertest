@@ -44,5 +44,29 @@ function deleteClient(clientId){
         .delete(`/v5/client/${clientId}`)
         .set('Authorization', process.env.TOKEN)
 }
+function createVendor (name){
+    return request(process.env.BASE_URL)
+        .post('/v5/vendor')
+        .send({name})
+        .set('Authorization', process.env.TOKEN)
+}
+function getVendorById (vendorId){
+    return request(process.env.BASE_URL)
+        .get(`/v5/vendor/${vendorId}`)
+        .set('Authorization', process.env.TOKEN)
+}
+function getVendorByName (vendorName){
+    return request(process.env.BASE_URL)
+        .post('/v5/vendor/search')
+        .send({name: vendorName})
+        .set('Authorization', process.env.TOKEN)
+}
+function getAllVendors(){
+    return request(process.env.BASE_URL)
+        .post('/v5/vendor/search')
+        .set('Authorization', process.env.TOKEN)
+        .send({limit: 40})
+}
 
-export {login, registration, createClient, getAllClients,getClientById, updateClient, deleteClient, getClientByName}
+export {login, registration, createClient, getAllClients,getClientById, updateClient, deleteClient, getClientByName,
+createVendor, getVendorById, getVendorByName,getAllVendors}
