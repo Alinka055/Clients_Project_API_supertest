@@ -202,12 +202,11 @@ describe('Service', () => {
         })
     })
 
-    describe.only('Get service by name', () => {
+    describe('Get service by name', () => {
         describe('Get service by correct name', () => {
             let response
             let vendorId
             const serviceName = faker.company.bsNoun()
-            const vendorName = faker.name.fullName()
 
             before(async () => {
                 vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
@@ -250,13 +249,39 @@ describe('Service', () => {
                 expect(response.body.message).to.eq('Service Search ok')
             })
 
-            it('Response body returns correct number of found vendors in itemCount', () => {
+            it('Response body returns correct number of found services in itemCount', () => {
                 expect(response.body.payload.pager.itemsCount).eq(0)
             })
 
-            it('Response body returns correct number of found vendors in items', () => {
+            it('Response body returns correct number of found services in items', () => {
                 expect(response.body.payload.items.length).eq(0)
             })
+        })
+    })
+
+    describe('Get all services', () => {
+        let response
+        let vendorId
+        before(async () => {
+            vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
+            await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price(), faker.commerce.price())
+            response = await service.getAllServices()
+        })
+
+        it('Response status code is 200', () => {
+            expect(response.statusCode).to.eq(200)
+        })
+
+        it('Response body returns correct message Service Search ok', () => {
+            expect(response.body.message).to.eq('Service Search ok')
+        })
+
+        it('Response body returns correct items', () => {
+            expect(response.body.payload.items).to.be.an('array')
+        })
+
+        it('Response body returns more than 1 vendors', () => {
+            expect(response.body.payload.items.length).to.be.at.least(1)
         })
     })
 });
