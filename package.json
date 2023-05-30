@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test:reporter": "mocha --config .mocharc.js --reporter mochawesome",
-    "test": "mocha --config .mocharc.js"
+    "test": "mocha --spec tests/**/*.js --config .mocharc.js",
+    "auth-test": "mocha --spec tests/auth.spec.js --config .mocharc.js"
   },
   "repository": {
     "type": "git",
