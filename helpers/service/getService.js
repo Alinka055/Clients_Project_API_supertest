@@ -15,5 +15,5 @@ export function getAllServices(){
     return request(process.env.BASE_URL)
         .post('/v5/service/search')
         .set('Authorization', process.env.TOKEN)
-        .send({limit: 40})
+        .send({limit: 50})
 }

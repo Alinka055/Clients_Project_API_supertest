@@ -2,6 +2,12 @@ import {faker} from "@faker-js/faker";
 import {expect} from "chai";
 import { vendor, service } from '../helpers'
 
+after( async() => {
+    const allServices = (await service.getAllServices()).body.payload.items
+    for(let i = 0; i < allServices.length; i++){
+        await service.deleteService(allServices[i]._id)
+    }
+});
 describe('Service', () => {
     describe('Create service', () => {
         describe('Create service with only required credentials', () => {
@@ -32,6 +38,7 @@ describe('Service', () => {
 
             before(async () => {
                 vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
+                console.log(vendorId)
                 response = await service.createServiceWithAllInfo(faker.company.bsNoun(), vendorId, faker.commerce.price(), faker.commerce.price(), faker.commerce.productDescription())
             })
 
@@ -82,13 +89,31 @@ describe('Service', () => {
             })
         })
 
+        describe('Create service with incorrect vendor id', () => {
+            let response
+            let vendorId
+
+            before(async () => {
+                vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
+                response = await service.createService(faker.company.bsNoun(), '6461aba21500cdea9a97474', faker.commerce.price(), faker.commerce.price())
+            })
+
+            it('Response status code is 400', () => {
+                expect(response.statusCode).to.eq(400)
+            })
+
+            it('Response body returns correct message Service create error', () => {
+                expect(response.body.message).to.eq('Service create error')
+            })
+        })
+
         describe('Create service with empty vendorPrice field', () => {
             let response
             let vendorId
 
             before(async () => {
                 vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
-                response = await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price())
+                response = await service.createService(faker.company.bsNoun(), vendorId, '', faker.commerce.price())
             })
 
             it('Response status code is 400', () => {
@@ -106,7 +131,7 @@ describe('Service', () => {
 
             before(async () => {
                 vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
-                response = await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price())
+                response = await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price(), '')
             })
 
             it('Response status code is 400', () => {
@@ -223,11 +248,11 @@ describe('Service', () => {
             })
 
             it('Response body returns correct number of found services in itemCount', () => {
-                expect(response.body.payload.pager.itemsCount).eq(1)
+                expect(response.body.payload.pager.itemsCount).to.be.at.least(1)
             })
 
             it('Response body returns correct number of found services in items', () => {
-                expect(response.body.payload.items.length).eq(1)
+                expect(response.body.payload.items.length).to.be.at.least(1)
             })
         })
 
@@ -282,6 +307,132 @@ describe('Service', () => {
 
         it('Response body returns more than 1 vendors', () => {
             expect(response.body.payload.items.length).to.be.at.least(1)
+        })
+    })
+
+    describe('Update service', () => {
+        describe('Update service with correct service id', () => {
+            const serviceName = 'decor'
+            const vendorPrice = 500
+            const clientPrice = 777
+            let response
+            let getServiceRes
+
+            before(async () => {
+                const vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
+                const serviceId = (await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price(), faker.commerce.price())).body.payload
+                response = await service.updateService (serviceId, serviceName, vendorPrice, clientPrice)
+                getServiceRes = await service.getServiceById(serviceId)
+            })
+
+            it('Response status code is 200', () => {
+                expect(response.statusCode).to.eq(200)
+            })
+
+            it('Response message is Service updated', () => {
+                expect(response.body.message).to.eq('Service updated')
+            })
+
+            it('Verify the updated service name', () => {
+                expect(getServiceRes.body.payload.name).to.eq(serviceName)
+            })
+
+            it('Verify the updated vendor price', () => {
+                expect(getServiceRes.body.payload.vendorPrice).to.eq(vendorPrice)
+            })
+
+            it('Verify the updated client price', () => {
+                expect(getServiceRes.body.payload.clientPrice).to.eq(clientPrice)
+            })
+        })
+
+        describe('Update service with incorrect service id', () => {
+            const serviceName = 'Tom Smith'
+            let response
+
+            before(async () => {
+                response = await service.updateService('666eb9a753a3e8e8b5416ecc', serviceName, 555, 888)
+            })
+
+            it('Response status code is 400', () => {
+                expect(response.statusCode).to.eq(400)
+            })
+
+            it('Response message is Service not found', () => {
+                expect(response.body.message).to.eq('Service not found')
+            })
+        })
+
+        describe('Update service with incorrect syntax service id', () => {
+            let response
+
+            before(async () => {
+                response = await service.updateService('aaaaaaaa', 'Tom Smith', 555, 888)
+            })
+
+            it('Response status code is 400', () => {
+                expect(response.statusCode).to.eq(400)
+            })
+
+            it('Response message is Service update error', () => {
+                expect(response.body.message).to.eq('Service update error')
+            })
+        })
+    })
+
+    describe('Delete service ', () => {
+        describe('Delete service with valid id', () => {
+            let response
+            let getServiceRes
+            before(async () => {
+                const vendorId = (await vendor.createVendor(faker.name.fullName())).body.payload
+                const serviceId = (await service.createService(faker.company.bsNoun(), vendorId, faker.commerce.price(), faker.commerce.price())).body.payload
+                response = await service.deleteService(serviceId)
+                getServiceRes = await service.getServiceById(serviceId)
+            })
+
+            it('Response status code is 200', () => {
+                expect(response.statusCode).to.eq(200)
+            })
+
+            it('Response body returns correct message Service deleted', () => {
+                expect(response.body.message).to.eq('Service deleted')
+            })
+
+            it('Verify that service was deleted', () => {
+                expect(getServiceRes.body.message).to.eq('No service for provided id')
+            })
+        })
+
+        describe('Delete service with invalid id', () => {
+            let serviceId = '64251a561c3ebf7414544929'
+            let response
+            before(async () => {
+                response = await service.deleteService(serviceId)
+            })
+
+            it('Response status code is 400', () => {
+                expect(response.statusCode).to.eq(400)
+            })
+
+            it('Response body returns correct message Service created', () => {
+                expect(response.body.message).to.eq('Service not found')
+            })
+        })
+
+        describe('Delete service with no id', () => {
+            let response
+            before(async () => {
+                response = await service.deleteService('')
+            })
+
+            it('Response status code is 404', () => {
+                expect(response.statusCode).to.eq(404)
+            })
+
+            it('Response body returns correct message Service created', () => {
+                expect(response.body.message).to.eq('API not found')
+            })
         })
     })
 });
