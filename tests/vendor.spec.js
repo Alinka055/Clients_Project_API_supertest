@@ -279,7 +279,7 @@ describe('Vendor', () => {
         expect(response.statusCode).to.eq(200)
       })
 
-      it('Response body returns correct message Vendor created', () => {
+      it('Response body returns correct message Vendor deleted', () => {
         expect(response.body.message).to.eq('Vendor deleted')
       })
 
