@@ -4,7 +4,7 @@ export function getAllClients(){
     return request(process.env.BASE_URL)
         .post('/v5/client/search')
         .set('Authorization', process.env.TOKEN)
-        .send({limit: 40})
+        .send({limit: 60})
 }
 export function getClientById (clientId){
     return request(process.env.BASE_URL)
