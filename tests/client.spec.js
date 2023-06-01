@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { expect } from 'chai'
 import { client } from '../helpers'
+
 after (async () => {
   let allClients = (await client.getAllClients ()).body.payload.items
   for(let i = 0; i < allClients.length; i++){
@@ -359,7 +360,7 @@ describe('Clients', () => {
         expect(response.statusCode).to.eq(200)
       })
 
-      it('Response body returns correct message Client created', () => {
+      it('Response body returns correct message Client deleted', () => {
         expect(response.body.message).to.eq('Client deleted')
       })
 
@@ -379,7 +380,7 @@ describe('Clients', () => {
         expect(response.statusCode).to.eq(400)
       })
 
-      it('Response body returns correct message Client created', () => {
+      it('Response body returns correct message Client not found', () => {
         expect(response.body.message).to.eq('Client not found')
       })
     })
@@ -394,7 +395,7 @@ describe('Clients', () => {
         expect(response.statusCode).to.eq(404)
       })
 
-      it('Response body returns correct message Client created', () => {
+      it('Response body returns correct message API not found', () => {
         expect(response.body.message).to.eq('API not found')
       })
     })

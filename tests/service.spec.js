@@ -430,7 +430,7 @@ describe('Service', () => {
                 expect(response.statusCode).to.eq(404)
             })
 
-            it('Response body returns correct message Service created', () => {
+            it('Response body returns correct message API not found', () => {
                 expect(response.body.message).to.eq('API not found')
             })
         })

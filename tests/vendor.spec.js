@@ -299,7 +299,7 @@ describe('Vendor', () => {
         expect(response.statusCode).to.eq(400)
       })
 
-      it('Response body returns correct message Vendor created', () => {
+      it('Response body returns correct message Vendor not found', () => {
         expect(response.body.message).to.eq('Vendor not found')
       })
     })
