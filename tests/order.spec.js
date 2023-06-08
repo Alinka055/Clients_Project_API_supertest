@@ -8,7 +8,7 @@ after(async () => {
         await order.deleteOrder(allOrders[i]._id)
     }
 });
-describe('Order', () => {
+describe.only('Order', () => {
     describe('Create order', () => {
         describe('Create order with only required credentials', () => {
             let response
