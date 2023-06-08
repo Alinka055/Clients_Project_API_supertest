@@ -7,6 +7,10 @@ after(async () => {
     for(let i = 0; i < allOrders.length; i++){
         await order.deleteOrder(allOrders[i]._id)
     }
+    let allClients = (await client.getAllClients()).body.payload.items
+    for(let i = 0; i < allClients.length; i++){
+        await client.deleteClient(allClients[i]._id)
+    }
 });
 describe('Order', () => {
     describe('Create order', () => {
