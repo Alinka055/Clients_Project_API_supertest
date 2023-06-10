@@ -12,7 +12,7 @@ after(async () => {
         await client.deleteClient(allClients[i]._id)
     }
 });
-describe.only('Order', () => {
+describe('Order', () => {
     describe('Create order', () => {
         describe('Create order with only required credentials', () => {
             let response
